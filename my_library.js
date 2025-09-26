@@ -42,15 +42,27 @@ class Library {
             }
         }
     }
+    getBookStats() {
+        const totalQuantity = this.books.reduce((accum, val) => accum + val.totalQuantity,0);
+        const availableQuantity = this.books.reduce((accum, val) => accum + val.availableQuantity,0);
+        const statistic = {
+            totalQuantity: totalQuantity,
+            availableQuantity: availableQuantity,
+            issued: totalQuantity - availableQuantity,
+            mostPopularBooks: this.books.sort((a, b) => b.borrowedBy.length - a.borrowedBy.length).slice(0,2)
+        }
+            return statistic;
+    }
 }
+
 
 const library = new Library("Тестовая библиотека");
 
 library.addBook("JavaScript для начинающих", "Иван Петров", 2023, "JS-001", 5);
 library.addBook("React продвинутый", "Мария Сидорова", 2024, "REACT-002", 3);
 library.addBook("React продвинутый", "Мария Сидорова", 2024, "REACT-002", 1);
-
 console.log(library.books);
 
 const foundBooks = library.findBook("ю");
 console.log(foundBooks.length); // Вернет 1
+console.log(library.getBookStats());
